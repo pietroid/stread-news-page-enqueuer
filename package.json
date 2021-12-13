@@ -1,0 +1,22 @@
+{
+  "name": "stread-news-page-enqueuer",
+  "version": "1.0.0",
+  "description": "Lambda function used to enque news pages from DataBase to the news page queue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pietroid/stread-news-page-enqueuer.git"
+  },
+  "author": "Pietro Domingues",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pietroid/stread-news-page-enqueuer/issues"
+  },
+  "homepage": "https://github.com/pietroid/stread-news-page-enqueuer#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1046.0"
+  }
+}
