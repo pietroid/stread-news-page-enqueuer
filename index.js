@@ -24,10 +24,11 @@ exports.handler = async () => {
 
     newsPagesList.forEach(async (newsPage) => {
         const queueParams = {
-            MessageGroupId: "defaultId2",
+            MessageGroupId: "defaultId3",
             MessageBody: JSON.stringify({
                 pageId: newsPage.id,
-                pageUrl: newsPage.main_url
+                pageUrl: newsPage.main_url,
+                time: Date.now(),
             }),
             QueueUrl: process.env.AWS_NEWS_PAGES_SQS_URL,
         };
