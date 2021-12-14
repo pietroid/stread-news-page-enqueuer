@@ -16,7 +16,16 @@ const pool = new Pool({
     password: process.env.AWS_DB_PASSWORD,
 })
 
-exports.handler = async () => {
+function resolveAfter10Seconds() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve('resolved');
+        }, 10000);
+    });
+}
+
+
+async function run() {
     const query = await pool.query('SELECT * FROM news_pages');
 
     const newsPagesList = query?.rows ?? [];
@@ -34,5 +43,8 @@ exports.handler = async () => {
         console.log(queueParams);
         await sqs.sendMessage(queueParams).promise();
     });
+    await resolveAfter10Seconds();
+    console.log('RUN SUCCESS');
     return `SUCCCESS (${newsPagesList.length} rows processed.)`;
 }
+run();
