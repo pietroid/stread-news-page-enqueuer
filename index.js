@@ -1,38 +1,45 @@
-// Load the AWS SDK for Node.js
-var AWS = require('aws-sdk');
-// Set the region 
-AWS.config.update({ region: 'REGION' });
+const dotenv = require('dotenv');
+const AWS = require('aws-sdk');
+const { Pool } = require('pg');
 
-// Create an SQS service object
-var sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
+dotenv.config();
 
-var params = {
-    // Remove DelaySeconds parameter and value for FIFO queues
-    DelaySeconds: 10,
-    MessageAttributes: {
-        "Title": {
-            DataType: "String",
-            StringValue: "The Whistler"
-        },
-        "Author": {
-            DataType: "String",
-            StringValue: "John Grisham"
-        },
-        "WeeksOn": {
-            DataType: "Number",
-            StringValue: "6"
-        }
-    },
-    MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
-    // MessageDeduplicationId: "TheWhistler",  // Required for FIFO queues
-    // MessageGroupId: "Group1",  // Required for FIFO queues
-    QueueUrl: "SQS_QUEUE_URL"
-};
-
-sqs.sendMessage(params, function (err, data) {
-    if (err) {
-        console.log("Error", err);
-    } else {
-        console.log("Success", data.MessageId);
-    }
+AWS.config.update({
+    region: process.env.AWS_REGION,
+    credentials: new AWS.Credentials(process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY)
 });
+
+const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
+
+const pool = new Pool({
+    host: process.env.AWS_DB_HOSTNAME,
+    port: 5432,
+    user: process.env.AWS_DB_USERNAME,
+    database: process.env.AWS_DB_DATABASE,
+    password: process.env.AWS_DB_PASSWORD,
+})
+
+async function run() {
+    try {
+        const query = await pool.query('SELECT * FROM news_pages');
+        pool.end();
+
+        const newsPagesList = query?.rows ?? [];
+
+        newsPagesList.forEach(async (newsPage) => {
+            const queueParams = {
+                MessageGroupId: "defaultId",
+                MessageBody: JSON.stringify({
+                    pageId: newsPage.id,
+                    pageUrl: newsPage.main_url
+                }),
+                QueueUrl: process.env.NEWS_PAGES_SQS_URL,
+            };
+            await sqs.sendMessage(queueParams).promise();
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+run();

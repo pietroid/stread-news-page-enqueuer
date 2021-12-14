@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/pietroid/stread-news-page-enqueuer#readme",
   "dependencies": {
-    "aws-sdk": "^2.1046.0"
+    "aws-sdk": "^2.1046.0",
+    "dotenv": "^10.0.0",
+    "pg": "^8.7.1"
   }
 }
