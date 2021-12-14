@@ -25,7 +25,7 @@ exports.handler = async () => {
 
         newsPagesList.forEach(async (newsPage) => {
             const queueParams = {
-                MessageGroupId: "defaultId",
+                MessageGroupId: "defaultId2",
                 MessageBody: JSON.stringify({
                     pageId: newsPage.id,
                     pageUrl: newsPage.main_url
