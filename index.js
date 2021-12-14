@@ -34,7 +34,8 @@ exports.handler = async () => {
             };
             await sqs.sendMessage(queueParams).promise();
         });
+        return `SUCCCESS (${newsPagesList.length} rows processed.)`;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 }
