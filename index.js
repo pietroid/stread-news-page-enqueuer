@@ -30,7 +30,7 @@ async function run() {
                     pageId: newsPage.id,
                     pageUrl: newsPage.main_url
                 }),
-                QueueUrl: process.env.NEWS_PAGES_SQS_URL,
+                QueueUrl: process.env.AWS_NEWS_PAGES_SQS_URL,
             };
             await sqs.sendMessage(queueParams).promise();
         });
