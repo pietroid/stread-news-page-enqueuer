@@ -16,7 +16,7 @@ const pool = new Pool({
     password: process.env.AWS_DB_PASSWORD,
 })
 
-async function run() {
+exports.handler = async () => {
     try {
         const query = await pool.query('SELECT * FROM news_pages');
         pool.end();
@@ -38,5 +38,3 @@ async function run() {
         console.log(error);
     }
 }
-
-run();
