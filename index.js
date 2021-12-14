@@ -32,6 +32,7 @@ exports.handler = async () => {
             }),
             QueueUrl: process.env.AWS_NEWS_PAGES_SQS_URL,
         };
+        console.log(queueParams);
         await sqs.sendMessage(queueParams).promise();
     });
     return `SUCCCESS (${newsPagesList.length} rows processed.)`;
