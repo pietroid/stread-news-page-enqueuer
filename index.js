@@ -17,25 +17,21 @@ const pool = new Pool({
 })
 
 exports.handler = async () => {
-    try {
-        const query = await pool.query('SELECT * FROM news_pages');
-        pool.end();
+    const query = await pool.query('SELECT * FROM news_pages');
+    pool.end();
 
-        const newsPagesList = query?.rows ?? [];
+    const newsPagesList = query?.rows ?? [];
 
-        newsPagesList.forEach(async (newsPage) => {
-            const queueParams = {
-                MessageGroupId: "defaultId2",
-                MessageBody: JSON.stringify({
-                    pageId: newsPage.id,
-                    pageUrl: newsPage.main_url
-                }),
-                QueueUrl: process.env.AWS_NEWS_PAGES_SQS_URL,
-            };
-            await sqs.sendMessage(queueParams).promise();
-        });
-        return `SUCCCESS (${newsPagesList.length} rows processed.)`;
-    } catch (error) {
-        return error;
-    }
+    newsPagesList.forEach(async (newsPage) => {
+        const queueParams = {
+            MessageGroupId: "defaultId2",
+            MessageBody: JSON.stringify({
+                pageId: newsPage.id,
+                pageUrl: newsPage.main_url
+            }),
+            QueueUrl: process.env.AWS_NEWS_PAGES_SQS_URL,
+        };
+        await sqs.sendMessage(queueParams).promise();
+    });
+    return `SUCCCESS (${newsPagesList.length} rows processed.)`;
 }
