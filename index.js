@@ -25,7 +25,7 @@ function resolveAfter10Seconds() {
 }
 
 
-async function run() {
+module.exports = async () => {
     const query = await pool.query('SELECT * FROM news_pages');
 
     const newsPagesList = query?.rows ?? [];
@@ -47,4 +47,3 @@ async function run() {
     console.log('RUN SUCCESS');
     return `SUCCCESS (${newsPagesList.length} rows processed.)`;
 }
-run();
