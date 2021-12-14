@@ -25,7 +25,7 @@ function resolveAfter10Seconds() {
 }
 
 
-module.exports = async () => {
+exports.handler = async () => {
     const query = await pool.query('SELECT * FROM news_pages');
 
     const newsPagesList = query?.rows ?? [];
