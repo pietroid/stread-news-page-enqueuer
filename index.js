@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 
 AWS.config.update({
     region: process.env.AWS_REGION,
-    credentials: new AWS.Credentials(process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY)
+    credentials: new AWS.Credentials(process.env.AWS_ACCESS_KEY_ID_, process.env.AWS_SECRET_ACCESS_KEY_)
 });
 
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
