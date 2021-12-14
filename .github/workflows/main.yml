@@ -26,12 +26,8 @@ jobs:
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
-          AWS_REGION: us-east-1
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DB_HOSTNAME: ${{ secrets.AWS_DB_HOSTNAME }}
-          AWS_DB_USERNAME: ${{ secrets.AWS_DB_USERNAME }}
-          AWS_DB_PASSWORD: ${{ secrets.AWS_DB_PASSWORD }}
-          AWS_DB_DATABASE: news_aggregator
+          aws_region: us-east-1
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           function_name: news-pages-enqueuer
           zip_file: bundle.zip
