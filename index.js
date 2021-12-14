@@ -18,7 +18,6 @@ const pool = new Pool({
 
 exports.handler = async () => {
     const query = await pool.query('SELECT * FROM news_pages');
-    pool.end();
 
     const newsPagesList = query?.rows ?? [];
 
