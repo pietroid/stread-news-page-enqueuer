@@ -20,14 +20,13 @@ exports.handler = async () => {
     const query = await pool.query('SELECT * FROM news_pages');
 
     const newsPagesList = query?.rows ?? [];
-
+    const MessageGroupId = Date.now().toString();
     for (let newsPage of newsPagesList) {
         const queueParams = {
-            MessageGroupId: "defaultId3",
+            MessageGroupId,
             MessageBody: JSON.stringify({
                 pageId: newsPage.id,
                 pageUrl: newsPage.main_url,
-                time: Date.now(),
             }),
             QueueUrl: process.env.AWS_NEWS_PAGES_SQS_URL,
         };
